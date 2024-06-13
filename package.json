@@ -1,0 +1,14 @@
+{
+  "name": "chatguru",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "start": "cypress open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}
