@@ -12,7 +12,7 @@ export function randowData(base: RandomDataType, qtd: RandomDataQtd) {
   const bases = {
     both: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
     char: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-    number: "0123456789"
+    number: "0123456789",
   };
   let randomText = "";
   const quantity = qtd.qtd;
@@ -38,4 +38,31 @@ export function randowData(base: RandomDataType, qtd: RandomDataQtd) {
  */
 export function getRandomBoolean() {
   return Math.random() < 0.5;
+}
+
+/**
+ * Parse a multipart form-data text to a JSON object
+ * @param {string} text - The text to be parsed
+ * @returns {object} The JSON object with the form data
+ */
+export function parseMultipartFormData(text) {
+  const boundaryMatch = text.match(/--([^\r\n]+)/);
+  if (!boundaryMatch) {
+    throw new Error("Boundary not found in the input text");
+  }
+  const boundary = boundaryMatch[1];
+  const parts = text.split(`--${boundary}`);
+  const jsonData = {};
+  parts.forEach((part) => {
+    const contentDispositionMatch = part.match(/Content-Disposition: form-data; name="([^"]+)"/);
+    if (contentDispositionMatch) {
+      const name = contentDispositionMatch[1];
+      const valueMatch = part.match(/\r\n\r\n([\s\S]*)/);
+      if (valueMatch) {
+        const value = valueMatch[1].trim();
+        jsonData[name] = value;
+      }
+    }
+  });
+  return jsonData;
 }
